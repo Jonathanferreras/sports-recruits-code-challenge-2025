@@ -1,13 +1,13 @@
 import api from "./Api";
 
-export const getPlayers = async () => {
+export const getBalancedTeams = async () => {
     const payload = {
         data: null,
         error: null,
     };
 
     try {
-        const response = await api.get("/player/all");
+        const response = await api.post("/teams/generate", {});
         payload.data = response.data;
     } catch (error) {
         payload.error = error;

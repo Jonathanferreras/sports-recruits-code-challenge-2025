@@ -9,23 +9,21 @@ class PlayerController extends Controller
 {
     public function index(): JsonResponse
     {
-        // uses your scopeOfPlayers() from the User model
-        $players = User::ofPlayers()
+        try {
+            $players = User::ofPlayers()
             ->orderBy('ranking', 'desc')
             ->where('user_type', "player")
             ->get();
 
-        return response()->json($players);
-    }
+        if ($players->isEmpty()) {
+            return response()->json(['message' => 'No Players available'], 422);
+        }
 
-    // public function balancedTeams(): JsonResponse
-    // {
-    //     # Requirements:
-    //     # generate balanced teams where each team has between 18-22 players and there is an even number of teams
-    //     # each team should have at least one goalie
-    //     # make sure the total ranking per team is as even as possible
-    //     # generate random names for each team
+        return response()->json($players);
         
-    //     $players = User::ofPlayers()
-    // }
+        } catch (\DomainException $e) {
+            return response()->json(['message' => 'Error occurred while fetching players'], 500);
+        }
+
+    }
 }
