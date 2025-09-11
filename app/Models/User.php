@@ -10,25 +10,17 @@ class User extends Model
 {
     public $timestamps = false;
 
-    // Let Eloquent cast your ints/bools automatically
-    protected function casts(): array
-    {
-        return [
-            'ranking' => 'integer',
-            'can_play_goalie' => 'boolean',
-        ];
-    }
-
-    // Include virtual attributes when serializing to array/JSON
-    protected $appends = ['is_goalie', 'fullname'];
-
-    /** Players only local scope */
-    public function scopeOfPlayers(Builder $query): Builder
+    /**
+     * Players only local scope
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfPlayers($query): Builder
     {
         return $query->where('user_type', 'player');
     }
 
-    // Old-style accessors you provided (still supported)
     public function getIsGoalieAttribute(): bool
     {
         return (bool) $this->can_play_goalie;
