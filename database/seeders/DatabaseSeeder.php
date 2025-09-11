@@ -13,11 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Load the SQL file data
+        $sql = file_get_contents(storage_path('users_pg.sql'));
+        \DB::unprepared($sql);
     }
 }
